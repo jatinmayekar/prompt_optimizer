@@ -40,10 +40,10 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
   const [peekedModel, setPeekedModel] = React.useState<Model>(models[0])
 
   return (
-    <div className="grid gap-2">
+    <div className="grid gap-1">
       <HoverCard openDelay={200}>
         <HoverCardTrigger asChild>
-          <Label htmlFor="model">Model</Label>
+          <Label htmlFor="model" className="text-xs">Model</Label>
         </HoverCardTrigger>
         <HoverCardContent
           align="start"
@@ -51,7 +51,7 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
           side="left"
         >
           The model which will generate the completion. Some models are suitable
-          for natural language tasks, others specialize in code. Learn more.
+          for natural language tasks, others specialize in code.
         </HoverCardContent>
       </HoverCard>
       <Popover open={open} onOpenChange={setOpen} {...props}>
@@ -61,10 +61,10 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
             role="combobox"
             aria-expanded={open}
             aria-label="Select a model"
-            className="w-full justify-between"
+            className="w-full justify-between text-xs h-8"
           >
             {selectedModel ? selectedModel.name : "Select a model..."}
-            <ChevronsUpDown className="opacity-50" />
+            <ChevronsUpDown className="h-3.5 w-3.5 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent align="end" className="w-[250px] p-0">
@@ -73,19 +73,19 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
               side="left"
               align="start"
               forceMount
-              className="min-h-[280px]"
+              className="min-h-[200px]"
             >
-              <div className="grid gap-2">
+              <div className="grid gap-1">
                 <h4 className="font-medium leading-none">{peekedModel.name}</h4>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-xs text-muted-foreground">
                   {peekedModel.description}
                 </div>
                 {peekedModel.strengths ? (
-                  <div className="mt-4 grid gap-2">
-                    <h5 className="text-sm font-medium leading-none">
+                  <div className="mt-2 grid gap-1">
+                    <h5 className="text-xs font-medium leading-none">
                       Strengths
                     </h5>
-                    <ul className="text-sm text-muted-foreground">
+                    <ul className="text-xs text-muted-foreground">
                       {peekedModel.strengths}
                     </ul>
                   </div>
@@ -93,7 +93,7 @@ export function ModelSelector({ models, types, ...props }: ModelSelectorProps) {
               </div>
             </HoverCardContent>
             <Command loop>
-              <CommandList className="h-[var(--cmdk-list-height)] max-h-[400px]">
+              <CommandList className="h-[var(--cmdk-list-height)] max-h-[300px]">
                 <CommandInput placeholder="Search Models..." />
                 <CommandEmpty>No Models found.</CommandEmpty>
                 <HoverCardTrigger />

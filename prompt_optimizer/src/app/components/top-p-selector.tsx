@@ -1,43 +1,28 @@
 "use client"
 
 import * as React from "react"
-import { SliderProps } from "@radix-ui/react-slider"
-
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/registry/new-york/ui/hover-card"
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/registry/new-york/ui/hover-card"
 import { Label } from "@/registry/new-york/ui/label"
 import { Slider } from "@/registry/new-york/ui/slider"
 
 interface TopPSelectorProps {
-  defaultValue: SliderProps["defaultValue"]
+  defaultValue: number[]
 }
 
 export function TopPSelector({ defaultValue }: TopPSelectorProps) {
   const [value, setValue] = React.useState(defaultValue)
 
   return (
-    <div className="grid gap-2 pt-2">
+    <div className="grid gap-1">
       <HoverCard openDelay={200}>
         <HoverCardTrigger asChild>
-          <div className="grid gap-4">
+          <div className="grid gap-1">
             <div className="flex items-center justify-between">
-              <Label htmlFor="top-p">Top P</Label>
-              <span className="w-12 rounded-md border border-transparent px-2 py-0.5 text-right text-sm text-muted-foreground hover:border-border">
+              <Label htmlFor="top-p" className="text-xs">Top P</Label>
+              <span className="w-12 rounded-md border border-transparent px-1 py-0.5 text-right text-xs text-muted-foreground">
                 {value}
               </span>
             </div>
-            <Slider
-              id="top-p"
-              max={1}
-              defaultValue={value}
-              step={0.1}
-              onValueChange={setValue}
-              className="[&_[role=slider]]:h-4 [&_[role=slider]]:w-4"
-              aria-label="Top P"
-            />
           </div>
         </HoverCardTrigger>
         <HoverCardContent
@@ -45,10 +30,18 @@ export function TopPSelector({ defaultValue }: TopPSelectorProps) {
           className="w-[260px] text-sm"
           side="left"
         >
-          Control diversity via nucleus sampling: 0.5 means half of all
+          Controls diversity via nucleus sampling: 0.5 means half of all
           likelihood-weighted options are considered.
         </HoverCardContent>
       </HoverCard>
+      <Slider
+        id="top-p"
+        max={1}
+        defaultValue={value}
+        step={0.01}
+        onValueChange={setValue}
+        className="[&_[role=slider]]:h-3.5 [&_[role=slider]]:w-3.5"
+      />
     </div>
   )
 }

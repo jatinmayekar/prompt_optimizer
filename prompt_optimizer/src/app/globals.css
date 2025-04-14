@@ -122,5 +122,24 @@
   }
   body {
     @apply bg-background text-foreground;
+    min-height: 100vh;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+  
+  .container {
+    max-width: 98vw;
+    width: 98vw;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  .grid {
+    max-height: calc(100vh - 5rem);
+  }
+  
+  textarea, .min-h-\[300px\], .min-h-\[400px\], .min-h-\[500px\] {
+    max-height: calc(100vh - 8rem);
   }
 }
