@@ -7,10 +7,16 @@ import { Slider } from "@/registry/new-york/ui/slider"
 
 interface TopPSelectorProps {
   defaultValue: number[]
+  onValueChange: (value: number[]) => void
 }
 
-export function TopPSelector({ defaultValue }: TopPSelectorProps) {
+export function TopPSelector({ defaultValue, onValueChange }: TopPSelectorProps) {
   const [value, setValue] = React.useState(defaultValue)
+
+  const handleValueChange = (newValue: number[]) => {
+    setValue(newValue)
+    onValueChange(newValue)
+  }
 
   return (
     <div className="grid gap-1">
@@ -39,7 +45,7 @@ export function TopPSelector({ defaultValue }: TopPSelectorProps) {
         max={1}
         defaultValue={value}
         step={0.01}
-        onValueChange={setValue}
+        onValueChange={handleValueChange}
         className="[&_[role=slider]]:h-3.5 [&_[role=slider]]:w-3.5"
       />
     </div>
