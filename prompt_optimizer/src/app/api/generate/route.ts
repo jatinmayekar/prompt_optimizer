@@ -3,14 +3,12 @@ import { ChatOpenAI } from "@langchain/openai";
 import { HumanMessage } from "@langchain/core/messages";
 
 export async function POST(req: NextRequest) {
-  // IMPORTANT: Create a .env.local file in the root of your project and add your OpenAI API key
-  // OPENAI_API_KEY="your_api_key_here"
   
   try {
     const { prompt, model, temperature, maxLength, topP } = await req.json();
 
     const chatModel = new ChatOpenAI({
-      modelName: model || "gpt-4o-mini", // Default to a current nano model
+      modelName: model || "gpt-4o-mini", // Default to a current mini model
       temperature: temperature || 0.8,
       maxTokens: maxLength || 256,
       topP: topP || 0.9,

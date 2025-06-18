@@ -1,0 +1,9 @@
+# Core dependencies for LangChain integration
+langchain>=0.1.0
+langchain-openai>=0.0.2
+openai>=1.0.0
+python-dotenv>=1.0.0
+
+# Optional but recommended for better development experience
+pydantic>=2.0.0
+typing-extensions>=4.0.0 
