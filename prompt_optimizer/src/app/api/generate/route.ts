@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const messages = [new HumanMessage({ content: prompt })];
     const response = await chatModel.invoke(messages);
 
-    return NextResponse.json({ output: response.content });
+    return NextResponse.json({ output: response.content, fullResponse: response });
   } catch (error) {
     console.error("Error processing request:", error);
     // It's better to not expose the internal error details to the client

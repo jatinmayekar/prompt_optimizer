@@ -25,6 +25,7 @@ import { presets } from "../data/presets"
 export function PlaygroundClient() {
   const [prompt, setPrompt] = useState("")
   const [output, setOutput] = useState("")
+  const [apiResponse, setApiResponse] = useState<object | null>(null)
   const [model, setModel] = useState("gpt-4o-mini") // Default model
   const [temperature, setTemperature] = useState([0.56])
   const [maxLength, setMaxLength] = useState([256])
@@ -69,6 +70,7 @@ export function PlaygroundClient() {
 
       const data = await response.json()
       setOutput(data.output)
+      setApiResponse(data.fullResponse)
     } catch (error) {
       console.error("Failed to generate completion:", error)
       setOutput("Failed to generate completion. Please check the console for details.")
@@ -111,11 +113,11 @@ export function PlaygroundClient() {
         </div>
         <Separator />
         <div className="container h-full py-6">
-          <div className="grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]">
+          <div className="grid h-full items-stretch gap-6 md:grid-cols-[2fr_1fr]">
             <div className="flex flex-col space-y-4">
               <Textarea
                 placeholder="Write a tagline for an ice cream shop"
-                className="min-h-[200px] flex-1 p-4 md:min-h-[400px]"
+                className="min-h-[300px] p-4"
                 onChange={handlePromptChange}
                 value={prompt}
                 onKeyDown={handleKeyDown}
@@ -125,7 +127,7 @@ export function PlaygroundClient() {
                   value={output}
                   readOnly
                   placeholder="The model's output will appear here."
-                  className="min-h-[200px] flex-1 p-4 md:min-h-[400px]"
+                  className="min-h-[300px] p-4"
                   tabIndex={-1}
                 />
                 {isLoading && (
@@ -146,6 +148,20 @@ export function PlaygroundClient() {
                 onValueChange={setMaxLength}
               />
               <TopPSelector defaultValue={topP} onValueChange={setTopP} />
+              <div className="flex flex-col space-y-2 pt-4">
+                <Label htmlFor="response-json">API Response</Label>
+                <Textarea
+                  id="response-json"
+                  readOnly
+                  value={
+                    apiResponse
+                      ? JSON.stringify(apiResponse, null, 2)
+                      : "The full API response will be displayed here after submission."
+                  }
+                  className="h-96 text-xs"
+                  tabIndex={-1}
+                />
+              </div>
             </div>
           </div>
         </div>
