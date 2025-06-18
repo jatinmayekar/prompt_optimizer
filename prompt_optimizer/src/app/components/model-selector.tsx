@@ -30,15 +30,22 @@ import {
 import { Model, ModelType } from "../data/models"
 
 interface ModelSelectorProps extends PopoverProps {
-  types: readonly ModelType[]
-  models: Model[]
-  onModelChange: (modelId: string) => void
+  types: readonly string[]
+  models: Model<string>[]
+  onModelChange: (model: string) => void
+  tabIndex?: number
 }
 
-export function ModelSelector({ models, types, onModelChange, ...props }: ModelSelectorProps) {
+export function ModelSelector({
+  models,
+  types,
+  onModelChange,
+  tabIndex,
+  ...props
+}: ModelSelectorProps) {
   const [open, setOpen] = React.useState(false)
-  const [selectedModel, setSelectedModel] = React.useState<Model>(models[0])
-  const [peekedModel, setPeekedModel] = React.useState<Model>(models[0])
+  const [selectedModel, setSelectedModel] = React.useState<Model<string>>(models[0])
+  const [peekedModel, setPeekedModel] = React.useState<Model<string>>(models[0])
 
   React.useEffect(() => {
     onModelChange(selectedModel.id)
@@ -66,10 +73,11 @@ export function ModelSelector({ models, types, onModelChange, ...props }: ModelS
             role="combobox"
             aria-expanded={open}
             aria-label="Select a model"
-            className="w-full justify-between text-xs h-8"
+            className="w-full justify-between"
+            tabIndex={tabIndex}
           >
             {selectedModel ? selectedModel.name : "Select a model..."}
-            <ChevronsUpDown className="h-3.5 w-3.5 opacity-50" />
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent align="end" className="w-[250px] p-0">
@@ -131,10 +139,10 @@ export function ModelSelector({ models, types, onModelChange, ...props }: ModelS
 }
 
 interface ModelItemProps {
-  model: Model
+  model: Model<string>
   isSelected: boolean
   onSelect: () => void
-  onPeek: (model: Model) => void
+  onPeek: (model: Model<string>) => void
 }
 
 function ModelItem({ model, isSelected, onSelect, onPeek }: ModelItemProps) {

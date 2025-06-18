@@ -35,6 +35,14 @@ export function PlaygroundClient() {
     setPrompt(e.target.value)
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+      e.preventDefault()
+      if (!prompt || isLoading) return
+      handleSubmit()
+    }
+  }
+
   const handleSubmit = async () => {
     if (!prompt || isLoading) return
     setIsLoading(true)
@@ -104,7 +112,30 @@ export function PlaygroundClient() {
         <Separator />
         <div className="container h-full py-6">
           <div className="grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]">
-            <div className="hidden flex-col space-y-4 sm:flex md:order-2">
+            <div className="flex flex-col space-y-4">
+              <Textarea
+                placeholder="Write a tagline for an ice cream shop"
+                className="min-h-[200px] flex-1 p-4 md:min-h-[400px]"
+                onChange={handlePromptChange}
+                value={prompt}
+                onKeyDown={handleKeyDown}
+              />
+              <div className="relative">
+                <Textarea
+                  value={output}
+                  readOnly
+                  placeholder="The model's output will appear here."
+                  className="min-h-[200px] flex-1 p-4 md:min-h-[400px]"
+                  tabIndex={-1}
+                />
+                {isLoading && (
+                  <div className="absolute inset-0 flex items-center justify-center rounded-md bg-black bg-opacity-10 dark:bg-opacity-50">
+                    <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-white border-t-transparent" />
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="hidden flex-col space-y-4 sm:flex">
               <ModelSelector types={types} models={models} onModelChange={setModel} />
               <TemperatureSelector
                 defaultValue={temperature}
@@ -116,48 +147,9 @@ export function PlaygroundClient() {
               />
               <TopPSelector defaultValue={topP} onValueChange={setTopP} />
             </div>
-            <div className="md:order-1">
-              <div className="flex h-full flex-col space-y-4">
-                <Textarea
-                  placeholder="Write a tagline for an ice cream shop"
-                  className="min-h-[200px] flex-1 p-4 md:min-h-[400px]"
-                  onChange={handlePromptChange}
-                  value={prompt}
-                />
-                <div className="flex items-center space-x-2">
-                  <Button onClick={handleSubmit} disabled={isLoading}>
-                    {isLoading ? "Generating..." : "Submit"}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="p-2"
-                    onClick={() => {
-                      setPrompt("")
-                      setOutput("")
-                    }}
-                  >
-                    <RotateCcw className="h-4 w-4" />
-                    <span className="sr-only">Reset</span>
-                  </Button>
-                </div>
-                <div className="relative">
-                  <Textarea
-                    value={output}
-                    readOnly
-                    placeholder="The model's output will appear here."
-                    className="min-h-[200px] flex-1 p-4 md:min-h-[400px]"
-                  />
-                  {isLoading && (
-                    <div className="absolute inset-0 flex items-center justify-center rounded-md bg-black bg-opacity-10 dark:bg-opacity-50">
-                      <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-white border-t-transparent" />
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
     </>
   )
-} 
+}
